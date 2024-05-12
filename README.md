@@ -16,11 +16,13 @@ for the berth allocation problem in dry bulk terminals,” Journal of Scheduling
 ### Instances
 
 The instances used are a subset of the [Ernst instances](https://andreas-ernst.github.io/Mathprog-ORlib/info/readmeBAP.html).
-They are in folder `instances`, in their original `.csv` format.
+They are in folder `instances` in their original `.csv` format.
 
 ### Citation
 
 You can solve this repository via Zenodo:
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11180306.svg)](https://doi.org/10.5281/zenodo.11180306)
 
 ```bib
 @misc{bap_github,
@@ -28,7 +30,7 @@ You can solve this repository via Zenodo:
     author={Santini, Alberto},
     date={2024-05-12},
     howpublished={Github repository},
-    doi={???},
+    doi={10.5281/zenodo.11180306},
     url={https://github.com/alberto-santini/bap-solvers-instances/}
 }
 ```
