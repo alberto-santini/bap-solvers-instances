@@ -25,7 +25,7 @@ class Instance:
                 if '.csv' not in instance_file:
                     instance_file += '.csv'
                 if 'instances/' not in instance_file:
-                    instance_file = f"../instances/source_ernst/{instance_file}"
+                    instance_file = f"../instances/{instance_file}"
 
                 if not path.exists(instance_file):
                     raise FileNotFoundError(f"Instance file not found: {instance_file}")
