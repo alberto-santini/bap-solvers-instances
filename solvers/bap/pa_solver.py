@@ -1,5 +1,5 @@
 from .instance import Instance
-from typing import Union
+from typing import Union, List, Dict, Tuple
 from gurobipy import Model, tupledict, Var, GRB
 from os import path
 from datetime import datetime
@@ -7,21 +7,22 @@ from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 import json
 
+
 class PASolver:
     instance: Instance
     output_folder: str
     grb_timelimit: float
 
-    time: list
+    time: List[int]
     m: Model
     x: tupledict
     y: tupledict
     c: tupledict
     makespan: Var
 
-    c_lb: dict
-    x_ijt: list
-    y_ijt: list
+    c_lb: Dict[int, int]
+    x_ijt: List[Tuple[int, int, int]]
+    y_ijt: List[Tuple[int, int, int]]
 
     start_ti: datetime
 
@@ -54,7 +55,7 @@ class PASolver:
             T = int(max(self.c_lb.values()) * 1.5)
 
         M = 1e4
-        self.time = range(T)
+        self.time = list(range(T))
 
         self.x_ijt = [
             (i, j, t)

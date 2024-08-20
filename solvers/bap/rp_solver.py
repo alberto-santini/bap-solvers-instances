@@ -1,11 +1,12 @@
 from .instance import Instance
-from typing import Union
+from typing import Union, List, Dict, Tuple
 from gurobipy import Model, tupledict, Var, GRB
 from datetime import datetime
 from os import path
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 import json
+
 
 class RPSolver:
     instance: Instance
@@ -20,14 +21,14 @@ class RPSolver:
     delta: tupledict
     makespan: Var
 
-    u_lb: dict
-    u_ub: dict
-    c_lb: dict
-    v_ub: dict
+    u_lb: Dict[int, int]
+    u_ub: Dict[int, int]
+    c_lb: Dict[int, int]
+    v_ub: Dict[int, int]
 
     start_ti: datetime
 
-    ij: list
+    ij: List[Tuple[int, int]]
 
     def __init__(self, instance: Union[str, Instance], output_folder: str, **kwargs):
         if type(instance) is Instance:
@@ -131,17 +132,6 @@ class RPSolver:
         elapsed_time = (end_ti - self.start_ti).total_seconds()
 
         if self.m.SolCount > 0:
-            ### TMP ###
-            # print(f"Variables value:")
-            # for i in self.instance.ships:
-            #     print(f"u[{i}] = {self.u[i].X:3.1f}, v[{i}] = {self.v[i].X:3.1f}, c[{i}] = {self.c[i].X:3.1f}")
-            # for i, j in self.ij:
-            #     if self.sigma[i,j].X > 0.5:
-            #         print(f"x[{i},{j}] = 1")
-            #     if self.delta[i,j].X > 0.5:
-            #         print(f"y[{i},{j}] = 1")
-            ### /TMP ###
-
             results = dict(
                 feasbile=True,
                 makespan=self.m.ObjVal,

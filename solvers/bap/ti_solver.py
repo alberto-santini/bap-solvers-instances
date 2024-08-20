@@ -1,9 +1,10 @@
 from .instance import Instance
-from typing import Union
+from typing import Union, List, Dict
 from gurobipy import Model, tupledict, Var, GRB
 from datetime import datetime
 from os import path
 import json
+
 
 class TISolver:
     instance: Instance
@@ -11,7 +12,7 @@ class TISolver:
     grb_timelimit: float
 
     T: int
-    time: list
+    time: List[int]
 
     m: Model
     x: tupledict
@@ -22,10 +23,10 @@ class TISolver:
     q: tupledict
     makespan: Var
 
-    s_lb: dict
-    s_ub: dict
-    c_lb: dict
-    y_ub: dict
+    s_lb: Dict[int, int]
+    s_ub: Dict[int, int]
+    c_lb: Dict[int, int]
+    y_ub: Dict[int, int]
 
     start_ti: datetime
 
@@ -53,7 +54,7 @@ class TISolver:
                 [a + h for a, h in zip(self.instance.arrival_time, self.instance.processing_time)]
             ) * 1.5)
         
-        self.time = range(self.T)
+        self.time = list(range(self.T))
 
         self.s_lb = {
             i: self.instance.arrival_time[i] for i in self.instance.ships
@@ -160,19 +161,6 @@ class TISolver:
         elapsed_time = (end_ti - self.start_ti).total_seconds()
 
         if self.m.SolCount > 0:
-            ### TMP ###
-            # print(f"Variables value:")
-            # for i1 in self.instance.ships:
-            #     for i2 in self.instance.ships:
-            #         if i1 == i2:
-            #             continue
-
-            #         print(f"{i1:02d} {i2:02d} x={self.x[i1,i2].X:.0f} I={self.I[i1,i2].X:.0f}")
-
-            # for i in self.instance.ships:
-            #     print(f"{i:02d} y={self.y[i].X:.1f} s={self.s[i].X:.1f} c={self.c[i].X:.1f}")
-            ### /TMP ###
-
             results = dict(
                 feasible=True,
                 makespan=self.m.ObjVal,
