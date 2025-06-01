@@ -2,6 +2,7 @@ from __future__ import annotations
 from os import path
 from typing import List, Dict, Optional
 from math import ceil, floor
+import json
 
 
 class Instance:
@@ -22,7 +23,7 @@ class Instance:
     def __init__(self, instance_file: Optional[str]):
         if instance_file is not None:
             if not path.exists(instance_file):
-                if '.csv' not in instance_file:
+                if '.csv' not in instance_file and '.json' not in instance_file:
                     instance_file += '.csv'
                 if 'instances/' not in instance_file:
                     instance_file = f"../instances/{instance_file}"
@@ -34,10 +35,30 @@ class Instance:
             self.__read_instance()
 
     def __read_instance(self) -> None:
-        if path.splitext(self.instance_file)[-1] == '.csv':
+        ext = path.splitext(self.instance_file)[-1]
+        if ext == '.csv':
             self.__read_csv_instance()
+        elif ext == '.json':
+            self.__read_json_instance()
         else:
             raise RuntimeError(f"File format not recognised for {self.instance_file}")
+        
+    def __read_json_instance(self) -> None:
+        with open(self.instance_file) as f:
+            data = json.load(f)
+
+        self.n_ships = data['n_ships']
+        self.n_berths = data['n_berths']
+        self.n_periods = data['n_periods']
+        
+        self.ships = list(range(self.n_ships))
+        self.berths = list(range(self.n_berths))
+        self.arrival_time = {i: t for i, t in enumerate(data['ship_arrival'])}
+        self.ship_length = {i: l for i, l in enumerate(data['ship_length'])}
+        self.processing_time = {i: t for i, t in enumerate(data['ship_handling'])}
+        self.berth_length = {i: 1 for i in self.berths}
+        self.quay_length = self.n_berths
+        self.time_horizon = list(range(self.n_periods))
         
     def __read_csv_instance(self)-> None:
         with open(self.instance_file) as f:

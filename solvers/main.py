@@ -28,7 +28,7 @@ if __name__ == '__main__':
         help='File containing a starting solution')
     parser.add_argument(
         '-f', '--fix-starting', action='store_true',
-        help='If the flag is given, the starting solution is fied rather than used as a hint')
+        help='If the flag is given, the starting solution is fixed rather than used as a hint')
     parser.add_argument(
         '-z', '--compute-iis', action='store_true',
         help='If the flag is given and the model is unfeasible, compute the IIS')
